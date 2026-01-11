@@ -2,6 +2,8 @@
 	import "./layout.css";
 	import favicon from "$lib/assets/favicon_io/favicon.ico";
 
+	import { injectAnalytics } from "@vercel/analytics/sveltekit";
+
 	let { children } = $props();
 </script>
 
