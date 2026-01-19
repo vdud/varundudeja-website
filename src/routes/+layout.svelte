@@ -4,7 +4,18 @@
 	import { injectAnalytics } from '@vercel/analytics/sveltekit';
 	import { onMount } from 'svelte';
 	import WalletConnect from '$lib/components/WalletConnectClient.svelte';
-	import { Home, CircleHelp, Laptop, Mail, Sun, Moon, Monitor, Menu } from '@lucide/svelte';
+	import {
+		Home,
+		CircleHelp,
+		Laptop,
+		Mail,
+		Sun,
+		Moon,
+		Monitor,
+		Menu,
+		Briefcase,
+		BadgeCheck
+	} from '@lucide/svelte';
 
 	let { children } = $props();
 	let sidebarOpen = $state(false);
@@ -109,13 +120,23 @@
 				</a>
 
 				<a
-					href="#skills"
-					class="nav-item {activeSection === 'skills' ? 'active' : ''}"
-					onclick={() => setActiveSection('skills')}
-					aria-label="Skills"
+					href="#socials"
+					class="nav-item {activeSection === 'socials' ? 'active' : ''}"
+					onclick={() => setActiveSection('socials')}
+					aria-label="Socials"
 				>
-					<Laptop class="nav-icon" size={24} />
-					<span class="nav-text">Skills</span>
+					<BadgeCheck class="nav-icon" size={24} />
+					<span class="nav-text">Socials</span>
+				</a>
+
+				<a
+					href="#services"
+					class="nav-item {activeSection === 'services' ? 'active' : ''}"
+					onclick={() => setActiveSection('services')}
+					aria-label="Services"
+				>
+					<Briefcase class="nav-icon" size={24} />
+					<span class="nav-text">Services</span>
 				</a>
 
 				<a
@@ -168,9 +189,13 @@
 		<a href="#home" class="mobile-nav-item" aria-label="Home">
 			<Home size={24} />
 		</a>
-		<a href="#skills" class="mobile-nav-item" aria-label="Skills">
-			<Laptop size={24} />
+		<a href="#socials" class="mobile-nav-item" aria-label="Socials">
+			<BadgeCheck size={24} />
 		</a>
+		<a href="#services" class="mobile-nav-item" aria-label="Services">
+			<Briefcase size={24} />
+		</a>
+
 		<a href="#contact" class="mobile-nav-item" aria-label="Contact">
 			<Mail size={24} />
 		</a>

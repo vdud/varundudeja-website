@@ -12,10 +12,20 @@
 		Instagram,
 		FileText,
 		Rocket,
-		GraduationCap
+		GraduationCap,
+		Send,
+		BadgeCheck,
+		Briefcase,
+		Mic,
+		Video
 	} from '@lucide/svelte';
 
 	import { modal } from '$lib/appkit';
+
+	import Telegram from '$lib/components/icons/Telegram.svelte';
+	import TikTok from '$lib/components/icons/TiktokIcon.svelte';
+	import XIcon from '$lib/components/icons/XIcon.svelte';
+	import Discord from '$lib/components/icons/Discord.svelte';
 
 	let theme = $state<'light' | 'dark' | 'system'>('system');
 	let resolvedTheme = $state<'light' | 'dark'>('dark');
@@ -94,8 +104,8 @@
 		{
 			name: 'Twitter',
 			handle: '@varundudeja96',
-			url: 'https://twitter.com/varundudeja96',
-			icon: Twitter
+			url: 'https://x.com/varundudeja96',
+			icon: XIcon
 		},
 		{
 			name: 'Instagram',
@@ -114,32 +124,84 @@
 			handle: '@Varun-Dudeja',
 			url: 'https://youtube.com/@Varun-Dudeja',
 			icon: Youtube
+		},
+		{
+			name: 'Telegram',
+			handle: '@vrx_ui',
+			url: 'https://t.me/+T8aZl-FKrqYzYWVl',
+			icon: Telegram
+		},
+		{
+			name: 'TikTok',
+			handle: '@vrx_ui',
+			url: 'https://www.tiktok.com/@vrx_ui?_r=1&_t=ZS-93CfowrXo5C',
+			icon: TikTok
+		},
+		{
+			name: 'Discord',
+			handle: 'The Freelance University (x_u)',
+			url: 'https://discord.gg/GfPD3jfy',
+			icon: Discord
 		}
 	];
 
-	const contentItems = [
+	// const contentItems = [
+	// 	{
+	// 		type: 'Blog',
+	// 		title: 'Building with SvelteKit',
+	// 		description: 'Deep dive into modern web development patterns',
+	// 		url: '#',
+	// 		icon: FileText
+	// 	},
+	// 	{
+	// 		type: 'Project',
+	// 		title: 'Web3 Portfolio',
+	// 		description: 'Blockchain-enabled portfolio with Reown integration',
+	// 		url: '#',
+	// 		icon: Rocket
+	// 	},
+	// 	{
+	// 		type: 'Tutorial',
+	// 		title: 'Smart Contracts 101',
+	// 		description: 'Learn the basics of Solidity development',
+	// 		url: '#',
+	// 		icon: GraduationCap
+	// 	}
+	// ];
+
+	const services = [
 		{
-			type: 'Blog',
-			title: 'Building with SvelteKit',
-			description: 'Deep dive into modern web development patterns',
-			url: '#',
-			icon: FileText
+			title: 'Consulting',
+			description: 'Strategic technical guidance for web projects, architecture & implementation.',
+			price: 'Starting at $150/hour',
+			icon: Briefcase,
+			subject: 'Consulting Inquiry',
+			body: "Hi Varun,\n\nI'm interested in consulting for my project:\n- Timeline: \n- Budget: \n- Needs: \n\nBest regards,"
 		},
 		{
-			type: 'Project',
-			title: 'Web3 Portfolio',
-			description: 'Blockchain-enabled portfolio with Reown integration',
-			url: '#',
-			icon: Rocket
+			title: 'Event Speaking',
+			description: 'Keynotes & talks on Web3, modern web dev & creative coding.',
+			price: 'Starting at $1000/event',
+			icon: Mic,
+			subject: 'Speaking Request',
+			body: 'Hi Varun,\n\nEvent details:\n- Name: \n- Date: \n- Audience: \n- Topic: \n\nBest regards,'
 		},
 		{
-			type: 'Tutorial',
-			title: 'Smart Contracts 101',
-			description: 'Learn the basics of Solidity development',
-			url: '#',
-			icon: GraduationCap
+			title: 'Live Interviews',
+			description: 'Podcasts, live streams & interviews about tech & creativity.',
+			price: 'Starting at $500/session',
+			icon: Video,
+			subject: 'Interview Request',
+			body: 'Hi Varun,\n\nInterview details:\n- Platform: \n- Duration: \n- Topic: \n\nBest regards,'
 		}
 	];
+
+	// Helper for mailto links
+	function getMailtoLink(service: (typeof services)[0]) {
+		const subject = encodeURIComponent(service.subject);
+		const body = encodeURIComponent(service.body);
+		return `mailto:varundudeja95@gmail.com?subject=${subject}&body=${body}`;
+	}
 
 	const emailSubject = encodeURIComponent("Let's work together!");
 	const emailBody = encodeURIComponent(
@@ -216,11 +278,11 @@
 						<WalletConnect isInNav={false} />
 					</div>
 					<a
-						href="#skills"
-						class="w-full rounded-lg border px-6 py-3 text-center font-medium transition-all sm:w-auto"
+						href="#socials"
+						class="flex w-full justify-center rounded-lg border px-6 py-3 text-center font-medium transition-all sm:w-auto"
 						style="border-color: var(--border-color); color: var(--text-secondary);"
 					>
-						See Skills
+						<BadgeCheck class="mr-2 h-5 w-5 self-center" /> See Socials
 					</a>
 				</div>
 			</div>
@@ -342,9 +404,46 @@
 	</div>
 </section>
 
-<section id="contact" class="px-4 py-16 sm:px-6 sm:py-24 md:py-32">
-	<div class="mx-auto max-w-3xl">
+<section id="services" class="px-4 py-16 sm:px-6 sm:py-24 md:py-32">
+	<div class="mx-auto max-w-4xl">
 		<p class="mb-2 font-mono text-xs sm:text-sm" style="color: var(--accent);">03.</p>
+		<h2 class="mb-8 text-2xl font-bold sm:mb-12 sm:text-3xl" style="color: var(--text-primary);">
+			Services I <span style="color: var(--text-muted);">Offer</span>
+		</h2>
+
+		<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+			{#each services as service}
+				<a
+					href={getMailtoLink(service)}
+					onclick={triggerConfetti}
+					class="hover:border-accent group overflow-hidden rounded-xl border p-6 transition-all duration-300 hover:-translate-y-1"
+					style="border-color: var(--border-color); background-color: var(--bg-card);"
+				>
+					<svelte:component
+						this={service.icon}
+						class="group-hover:text-accent mb-4 h-12 w-12 transition-colors"
+						style="color: var(--accent);"
+					/>
+					<h3 class="mb-2 text-xl font-bold" style="color: var(--text-primary);">
+						{service.title}
+					</h3>
+					<p class="mb-4 text-base leading-relaxed" style="color: var(--text-muted);">
+						{service.description}
+					</p>
+					<p class="font-mono text-sm" style="color: var(--accent);">{service.price}</p>
+				</a>
+			{/each}
+		</div>
+	</div>
+</section>
+
+<section
+	id="contact"
+	class="px-4 py-16 sm:px-6 sm:py-24 md:py-32"
+	style="background-color: var(--bg-tertiary);"
+>
+	<div class="mx-auto max-w-3xl">
+		<p class="mb-2 font-mono text-xs sm:text-sm" style="color: var(--accent);">04.</p>
 		<h2 class="mb-4 text-2xl font-bold sm:mb-6 sm:text-3xl" style="color: var(--text-primary);">
 			Let's <span class="gradient-text">connect</span>
 		</h2>
@@ -415,8 +514,7 @@
 		class="mx-auto flex max-w-3xl flex-col items-center justify-between gap-2 font-mono text-xs sm:flex-row sm:gap-0"
 		style="color: var(--text-muted);"
 	>
-		<p>© {new Date().getFullYear()} varun.dev</p>
-		<p>Built with Svelte + ☕</p>
+		<p>© {new Date().getFullYear()} x_u</p>
 	</div>
 </footer>
 
