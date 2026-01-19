@@ -4,7 +4,16 @@
 	import WalletConnect from '$lib/components/WalletConnectClient.svelte';
 	import { accountState, networkState, appKitState, events, walletInfo } from '$lib/store';
 
-	import { Github, Linkedin, Twitter } from '@lucide/svelte';
+	import {
+		Github,
+		Linkedin,
+		Twitter,
+		Youtube,
+		Instagram,
+		FileText,
+		Rocket,
+		GraduationCap
+	} from '@lucide/svelte';
 
 	import { modal } from '$lib/appkit';
 
@@ -75,21 +84,60 @@
 		localStorage.setItem('theme', theme);
 	}
 
-	const skillCategories = [
+	const socials = [
 		{
-			name: 'Frontend',
-			icon: '⚡',
-			skills: ['Svelte', 'SvelteKit', 'TypeScript', 'TailwindCSS', 'Vercel']
+			name: 'GitHub',
+			handle: '@vdud',
+			url: 'https://github.com/vdud',
+			icon: Github
 		},
 		{
-			name: 'Backend & Web3',
-			icon: '🔗',
-			skills: ['Supabase', 'Python', 'Solidity', 'Web3.js', 'MongoDB']
+			name: 'Twitter',
+			handle: '@varundudeja96',
+			url: 'https://twitter.com/varundudeja96',
+			icon: Twitter
 		},
 		{
-			name: 'Creative',
-			icon: '🎨',
-			skills: ['Photoshop', 'Illustrator', 'After Effects', 'Blender', 'Premiere Pro']
+			name: 'Instagram',
+			handle: '@vrx_ui',
+			url: 'https://instagram.com/vrx_ui',
+			icon: Instagram
+		},
+		{
+			name: 'LinkedIn',
+			handle: 'Varun Dudeja',
+			url: 'https://linkedin.com/in/varun-dudeja-3ba254142',
+			icon: Linkedin
+		},
+		{
+			name: 'YouTube',
+			handle: '@Varun-Dudeja',
+			url: 'https://youtube.com/@Varun-Dudeja',
+			icon: Youtube
+		}
+	];
+
+	const contentItems = [
+		{
+			type: 'Blog',
+			title: 'Building with SvelteKit',
+			description: 'Deep dive into modern web development patterns',
+			url: '#',
+			icon: FileText
+		},
+		{
+			type: 'Project',
+			title: 'Web3 Portfolio',
+			description: 'Blockchain-enabled portfolio with Reown integration',
+			url: '#',
+			icon: Rocket
+		},
+		{
+			type: 'Tutorial',
+			title: 'Smart Contracts 101',
+			description: 'Learn the basics of Solidity development',
+			url: '#',
+			icon: GraduationCap
 		}
 	];
 
@@ -223,36 +271,74 @@
 </section>
 
 <section
-	id="skills"
+	id="socials"
 	class="px-4 py-16 sm:px-6 sm:py-24 md:py-32"
 	style="background-color: var(--bg-tertiary);"
 >
 	<div class="mx-auto max-w-4xl">
 		<p class="mb-2 font-mono text-xs sm:text-sm" style="color: var(--accent);">02.</p>
 		<h2 class="mb-8 text-2xl font-bold sm:mb-12 sm:text-3xl" style="color: var(--text-primary);">
-			Tools I <span style="color: var(--text-muted);">wield</span>
+			Connect & <span style="color: var(--text-muted);">Explore</span>
 		</h2>
 
-		<div class="grid gap-6 sm:grid-cols-2 sm:gap-8 md:grid-cols-3">
-			{#each skillCategories as category}
-				<div class="group">
-					<div class="mb-4 flex items-center gap-2">
-						<span class="text-xl">{category.icon}</span>
-						<h3 class="text-lg font-semibold" style="color: var(--text-primary);">
-							{category.name}
-						</h3>
-					</div>
-					<div class="space-y-2">
-						{#each category.skills as skill}
-							<div class="skill-card flex items-center justify-between rounded-lg border px-4 py-3">
-								<span class="text-sm" style="color: var(--text-secondary);">{skill}</span>
-								<span class="font-mono text-xs" style="color: var(--accent);">✓</span>
-							</div>
-						{/each}
-					</div>
-				</div>
+		<!-- Social Links -->
+		<div class="mb-12 flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+			{#each socials as social}
+				<a
+					href={social.url}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="group flex h-16 w-16 items-center justify-center rounded-xl transition-all hover:scale-110 sm:h-20 sm:w-20"
+					style="background-color: var(--bg-card);"
+					aria-label={social.name}
+				>
+					<svelte:component
+						this={social.icon}
+						class="group-hover:text-accent h-7 w-7 transition-colors"
+						style="color: var(--text-secondary);"
+					/>
+				</a>
 			{/each}
 		</div>
+
+		<!-- Content/Projects Grid -->
+		<!-- <h3 class="mb-6 text-lg font-semibold" style="color: var(--text-primary);">Latest Content</h3>
+		<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+			{#each contentItems as item}
+				<a
+					href={item.url}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="hover:border-accent group overflow-hidden rounded-xl border transition-all duration-300 hover:-translate-y-1"
+					style="border-color: var(--border-color); background-color: var(--bg-card);"
+				>
+					<div
+						class="flex h-32 w-full items-center justify-center"
+						style="background-color: var(--bg-secondary);"
+					>
+						<svelte:component
+							this={item.icon}
+							class="h-12 w-12 opacity-30 transition-opacity group-hover:opacity-50"
+							style="color: var(--text-muted);"
+						/>
+					</div>
+					<div class="p-5">
+						<span
+							class="mb-2 inline-block rounded-full px-3 py-1 font-mono text-xs"
+							style="color: var(--accent); background-color: var(--accent); opacity: 0.1;"
+						>
+							{item.type}
+						</span>
+						<h4 class="mb-2 text-lg font-semibold" style="color: var(--text-primary);">
+							{item.title}
+						</h4>
+						<p class="text-sm leading-relaxed" style="color: var(--text-muted);">
+							{item.description}
+						</p>
+					</div>
+				</a>
+			{/each}
+		</div> -->
 	</div>
 </section>
 
@@ -333,3 +419,15 @@
 		<p>Built with Svelte + ☕</p>
 	</div>
 </footer>
+
+<style>
+	.social-card:hover {
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+		border-color: var(--accent);
+	}
+
+	.content-card:hover {
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+		border-color: var(--accent);
+	}
+</style>

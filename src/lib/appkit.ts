@@ -8,7 +8,6 @@ import { ethers } from 'ethers';
 
 // Only initialize in browser environment
 let modal: ReturnType<typeof createAppKit> | undefined = undefined;
-let provider;
 
 if (browser) {
 	const projectId = import.meta.env.VITE_PROJECT_ID;
@@ -22,8 +21,8 @@ if (browser) {
 	// Initialize AppKit
 	modal = createAppKit({
 		adapters: [ethersAdapter],
-		networks: [arbitrum, mainnet, optimism, polygon, bsc, base, avalanche],
-		defaultNetwork: arbitrum,
+		networks: [mainnet],
+		defaultNetwork: mainnet,
 		projectId,
 		features: {
 			email: false,
