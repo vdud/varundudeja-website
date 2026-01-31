@@ -2,7 +2,6 @@
 	import { onMount } from 'svelte';
 	import confetti from 'canvas-confetti';
 	import WalletConnect from '$lib/components/WalletConnectClient.svelte';
-	import { accountState, networkState, appKitState, events, walletInfo } from '$lib/store';
 
 	import {
 		Github,
@@ -10,17 +9,18 @@
 		Twitter,
 		Youtube,
 		Instagram,
-		FileText,
 		Rocket,
 		GraduationCap,
-		Send,
+		Mail,
 		BadgeCheck,
 		Briefcase,
 		Mic,
-		Video
+		Video,
+		Globe,
+		ScanLine,
+		Construction,
+		ExternalLink
 	} from '@lucide/svelte';
-
-	import { modal } from '$lib/appkit';
 
 	import Telegram from '$lib/components/icons/Telegram.svelte';
 	import TikTok from '$lib/components/icons/TiktokIcon.svelte';
@@ -41,42 +41,19 @@
 	}
 
 	onMount(() => {
-		const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | 'system' | null;
-		theme = savedTheme || 'system';
-		updateTheme();
-
-		console.log('modal', modal);
-
-		modal?.subscribeAccount((state) => {
-			$accountState = state;
-		});
-		// @dev: Verbatim from reown
-		modal?.subscribeNetwork((state) => {
-			$networkState = state;
-		});
-		// @dev: Verbatim from reown
-		modal?.subscribeState((state) => {
-			$appKitState = state;
-		});
-		// @dev: Verbatim from reown
-		modal?.subscribeEvents((state) => {
-			$events = state;
-		});
-		// @dev: Verbatim from reown
-		modal?.subscribeWalletInfo((state) => {
-			$walletInfo = state;
-		});
-
-		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-		mediaQuery.addEventListener('change', updateTheme);
-
-		// Listen for theme cycle events from layout
+		// Listen for theme changes from layout
 		const handleThemeCycle = (e: Event) => {
 			const customEvent = e as CustomEvent;
 			theme = customEvent.detail.theme;
 			updateTheme();
 		};
 		window.addEventListener('theme-change', handleThemeCycle);
+
+		// Set initial theme from system if not already set by layout event
+		updateTheme();
+
+		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+		mediaQuery.addEventListener('change', updateTheme);
 
 		return () => {
 			mediaQuery.removeEventListener('change', updateTheme);
@@ -145,29 +122,32 @@
 		}
 	];
 
-	// const contentItems = [
-	// 	{
-	// 		type: 'Blog',
-	// 		title: 'Building with SvelteKit',
-	// 		description: 'Deep dive into modern web development patterns',
-	// 		url: '#',
-	// 		icon: FileText
-	// 	},
-	// 	{
-	// 		type: 'Project',
-	// 		title: 'Web3 Portfolio',
-	// 		description: 'Blockchain-enabled portfolio with Reown integration',
-	// 		url: '#',
-	// 		icon: Rocket
-	// 	},
-	// 	{
-	// 		type: 'Tutorial',
-	// 		title: 'Smart Contracts 101',
-	// 		description: 'Learn the basics of Solidity development',
-	// 		url: '#',
-	// 		icon: GraduationCap
-	// 	}
-	// ];
+	const projects = [
+		{
+			title: 'Desi World',
+			description:
+				'A metaverse platform currently in development. Exploring virtual worlds, digital identity, and immersive experiences.',
+			url: 'https://desi-world.vercel.app',
+			image:
+				'https://kimi-web-img.moonshot.cn/img/www.zvky.com/dd8c6835bae96b2e1c90b4c22a98c393bc8da220.webp',
+			icon: Globe,
+			status: 'In Development',
+			statusIcon: Construction,
+			statusColor: 'var(--text-muted)'
+		},
+		{
+			title: 'Wassup World',
+			description:
+				'E-menu and ordering system using barcode scanning for seamless dining experiences. Scan, order, pay.',
+			url: 'https://www.wassup.world',
+			image:
+				'https://kimi-web-img.moonshot.cn/img/www.pineserve.com/826b52e5ab1c51812a8f9c3f320631ab3c6fe271.jpg',
+			icon: ScanLine,
+			status: 'Live',
+			statusIcon: Rocket,
+			statusColor: 'var(--accent)'
+		}
+	];
 
 	const services = [
 		{
@@ -196,7 +176,6 @@
 		}
 	];
 
-	// Helper for mailto links
 	function getMailtoLink(service: (typeof services)[0]) {
 		const subject = encodeURIComponent(service.subject);
 		const body = encodeURIComponent(service.body);
@@ -333,12 +312,80 @@
 </section>
 
 <section
-	id="socials"
+	id="projects"
 	class="px-4 py-16 sm:px-6 sm:py-24 md:py-32"
 	style="background-color: var(--bg-tertiary);"
 >
 	<div class="mx-auto max-w-4xl">
 		<p class="mb-2 font-mono text-xs sm:text-sm" style="color: var(--accent);">02.</p>
+		<h2 class="mb-8 text-2xl font-bold sm:mb-12 sm:text-3xl" style="color: var(--text-primary);">
+			Featured <span style="color: var(--text-muted);">Projects</span>
+		</h2>
+
+		<div class="grid gap-6 md:grid-cols-2">
+			{#each projects as project}
+				<a
+					href={project.url}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="group overflow-hidden rounded-xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+					style="border-color: var(--border-color); background-color: var(--bg-card);"
+				>
+					<div
+						class="relative h-48 w-full overflow-hidden sm:h-56"
+						style="background-color: var(--bg-secondary);"
+					>
+						<img
+							src={project.image}
+							alt={project.title}
+							class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+						/>
+						<div
+							class="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/10"
+						/>
+
+						<!-- External Link Icon -->
+						<div
+							class="absolute right-3 top-3 rounded-full p-2 opacity-0 transition-all duration-300 group-hover:opacity-100"
+							style="background-color: var(--bg-card);"
+						>
+							<ExternalLink class="h-4 w-4" style="color: var(--text-primary);" />
+						</div>
+					</div>
+
+					<div class="p-5">
+						<div class="mb-3 flex items-center justify-between">
+							<div
+								class="flex items-center gap-2 rounded-full px-3 py-1.5 font-mono text-xs"
+								style="background-color: {project.statusColor}20; color: {project.statusColor}; border: 1px solid {project.statusColor}40;"
+							>
+								<svelte:component this={project.statusIcon} class="h-3 w-3" />
+								<span>{project.status}</span>
+							</div>
+
+							<svelte:component
+								this={project.icon}
+								class="h-5 w-5 transition-colors"
+								style="color: var(--text-muted);"
+							/>
+						</div>
+
+						<h4 class="mb-2 text-lg font-semibold" style="color: var(--text-primary);">
+							{project.title}
+						</h4>
+						<p class="text-sm leading-relaxed" style="color: var(--text-muted);">
+							{project.description}
+						</p>
+					</div>
+				</a>
+			{/each}
+		</div>
+	</div>
+</section>
+
+<section id="socials" class="px-4 py-16 sm:px-6 sm:py-24 md:py-32">
+	<div class="mx-auto max-w-4xl">
+		<p class="mb-2 font-mono text-xs sm:text-sm" style="color: var(--accent);">03.</p>
 		<h2 class="mb-8 text-2xl font-bold sm:mb-12 sm:text-3xl" style="color: var(--text-primary);">
 			Connect & <span style="color: var(--text-muted);">Explore</span>
 		</h2>
@@ -362,51 +409,12 @@
 				</a>
 			{/each}
 		</div>
-
-		<!-- Content/Projects Grid -->
-		<!-- <h3 class="mb-6 text-lg font-semibold" style="color: var(--text-primary);">Latest Content</h3>
-		<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-			{#each contentItems as item}
-				<a
-					href={item.url}
-					target="_blank"
-					rel="noopener noreferrer"
-					class="hover:border-accent group overflow-hidden rounded-xl border transition-all duration-300 hover:-translate-y-1"
-					style="border-color: var(--border-color); background-color: var(--bg-card);"
-				>
-					<div
-						class="flex h-32 w-full items-center justify-center"
-						style="background-color: var(--bg-secondary);"
-					>
-						<svelte:component
-							this={item.icon}
-							class="h-12 w-12 opacity-30 transition-opacity group-hover:opacity-50"
-							style="color: var(--text-muted);"
-						/>
-					</div>
-					<div class="p-5">
-						<span
-							class="mb-2 inline-block rounded-full px-3 py-1 font-mono text-xs"
-							style="color: var(--accent); background-color: var(--accent); opacity: 0.1;"
-						>
-							{item.type}
-						</span>
-						<h4 class="mb-2 text-lg font-semibold" style="color: var(--text-primary);">
-							{item.title}
-						</h4>
-						<p class="text-sm leading-relaxed" style="color: var(--text-muted);">
-							{item.description}
-						</p>
-					</div>
-				</a>
-			{/each}
-		</div> -->
 	</div>
 </section>
 
 <section id="services" class="px-4 py-16 sm:px-6 sm:py-24 md:py-32">
 	<div class="mx-auto max-w-4xl">
-		<p class="mb-2 font-mono text-xs sm:text-sm" style="color: var(--accent);">03.</p>
+		<p class="mb-2 font-mono text-xs sm:text-sm" style="color: var(--accent);">04.</p>
 		<h2 class="mb-8 text-2xl font-bold sm:mb-12 sm:text-3xl" style="color: var(--text-primary);">
 			Services I <span style="color: var(--text-muted);">Offer</span>
 		</h2>
@@ -442,8 +450,8 @@
 	class="px-4 py-16 sm:px-6 sm:py-24 md:py-32"
 	style="background-color: var(--bg-tertiary);"
 >
-	<div class="mx-auto max-w-3xl">
-		<p class="mb-2 font-mono text-xs sm:text-sm" style="color: var(--accent);">04.</p>
+	<div class="max-3xl mx-auto">
+		<p class="mb-2 font-mono text-xs sm:text-sm" style="color: var(--accent);">05.</p>
 		<h2 class="mb-4 text-2xl font-bold sm:mb-6 sm:text-3xl" style="color: var(--text-primary);">
 			Let's <span class="gradient-text">connect</span>
 		</h2>

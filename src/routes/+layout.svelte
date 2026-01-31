@@ -4,6 +4,9 @@
 	import { injectAnalytics } from '@vercel/analytics/sveltekit';
 	import { onMount } from 'svelte';
 	import WalletConnect from '$lib/components/WalletConnectClient.svelte';
+	import { modal } from '$lib/appkit';
+	import { accountState, networkState, appKitState, events, walletInfo } from '$lib/store';
+
 	import {
 		Home,
 		CircleHelp,
@@ -39,17 +42,41 @@
 		const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | 'system' | null;
 		theme = savedTheme || 'system';
 
+		// Dispatch initial theme for child components
+		const event = new CustomEvent('theme-change', { detail: { theme } });
+		window.dispatchEvent(event);
+
 		const handleKeyDown = (e: KeyboardEvent) => {
 			if (e.key === 'Escape') closeSidebar();
 		};
 		window.addEventListener('keydown', handleKeyDown);
-		return () => window.removeEventListener('keydown', handleKeyDown);
+
+		// Initialize wallet subscriptions (moved from +page.svelte)
+		modal?.subscribeAccount((state) => {
+			$accountState = state;
+		});
+		modal?.subscribeNetwork((state) => {
+			$networkState = state;
+		});
+		modal?.subscribeState((state) => {
+			$appKitState = state;
+		});
+		modal?.subscribeEvents((state) => {
+			$events = state;
+		});
+		modal?.subscribeWalletInfo((state) => {
+			$walletInfo = state;
+		});
+
+		return () => {
+			window.removeEventListener('keydown', handleKeyDown);
+		};
 	});
 
 	function cycleTheme() {
 		const themes: ('light' | 'dark' | 'system')[] = ['system', 'light', 'dark'];
 		const currentIndex = themes.indexOf(theme);
-		theme = themes[(currentIndex + 1) % themes.length];
+		theme = themes[(currentIndex + 1) % 3];
 		const event = new CustomEvent('theme-change', { detail: { theme } });
 		window.dispatchEvent(event);
 		localStorage.setItem('theme', theme);
@@ -120,6 +147,16 @@
 				</a>
 
 				<a
+					href="#projects"
+					class="nav-item {activeSection === 'projects' ? 'active' : ''}"
+					onclick={() => setActiveSection('projects')}
+					aria-label="Projects"
+				>
+					<Laptop class="nav-icon" size={24} />
+					<span class="nav-text">Projects</span>
+				</a>
+
+				<a
 					href="#socials"
 					class="nav-item {activeSection === 'socials' ? 'active' : ''}"
 					onclick={() => setActiveSection('socials')}
@@ -151,7 +188,7 @@
 			</nav>
 
 			<!-- Bottom Actions -->
-			<div class="-bottom">
+			<div class="sidebar-bottom">
 				<button
 					class="nav-item theme-toggle-btn mb-2"
 					onclick={cycleTheme}
@@ -204,7 +241,3 @@
 		</button>
 	</nav>
 </div>
-
-<!-- {#if modal}
-  <div id="appkit-modal-container"></div>
-{/if} -->
