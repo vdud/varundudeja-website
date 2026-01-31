@@ -10,8 +10,6 @@
 		Youtube,
 		Instagram,
 		Rocket,
-		GraduationCap,
-		Mail,
 		BadgeCheck,
 		Briefcase,
 		Mic,
@@ -129,11 +127,11 @@
 				'A metaverse platform currently in development. Exploring virtual worlds, digital identity, and immersive experiences.',
 			url: 'https://desi-world.vercel.app',
 			image:
-				'https://kimi-web-img.moonshot.cn/img/www.zvky.com/dd8c6835bae96b2e1c90b4c22a98c393bc8da220.webp',
+				'https://images.unsplash.com/photo-1694903062502-6df8204136af?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bWV0YXZlcnNlfGVufDB8fDB8fHww',
 			icon: Globe,
 			status: 'In Development',
 			statusIcon: Construction,
-			statusColor: 'var(--text-muted)'
+			statusColor: '#f2c222'
 		},
 		{
 			title: 'Wassup World',
@@ -141,7 +139,7 @@
 				'E-menu and ordering system using barcode scanning for seamless dining experiences. Scan, order, pay.',
 			url: 'https://www.wassup.world',
 			image:
-				'https://kimi-web-img.moonshot.cn/img/www.pineserve.com/826b52e5ab1c51812a8f9c3f320631ab3c6fe271.jpg',
+				'https://images.unsplash.com/photo-1600147131759-880e94a6185f?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGJhcmNvZGUlMjBtZW51JTIwc2Nhbm5pbmclMjBhcHB8ZW58MHx8MHx8fDA%3D',
 			icon: ScanLine,
 			status: 'Live',
 			statusIcon: Rocket,
